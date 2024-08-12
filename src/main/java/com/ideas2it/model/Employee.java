@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.time.Period;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.ideas2it.model.Passport;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -41,7 +42,7 @@ public class Employee {
     @JoinColumn(name = "department_id")
     private Department department;
     
-    @OneToOne(fetch = FetchType.EAGER)
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "passport_id")
     private Passport passport;
   
@@ -61,6 +62,7 @@ public class Employee {
     @JoinTable(name = "association_table",
         joinColumns = @JoinColumn(name = "employee_id"),           
         inverseJoinColumns = @JoinColumn(name = "id"))
+    @JsonBackReference
     private Set<Project> projectList;
 
     public String getProjectNames() {
