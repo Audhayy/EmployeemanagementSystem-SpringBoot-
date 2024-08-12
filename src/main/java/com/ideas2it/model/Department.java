@@ -1,7 +1,12 @@
 package com.ideas2it.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.Set;
 
@@ -13,7 +18,10 @@ import java.util.Set;
   *@author Audhithiyah
   *</p>
   */
-
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name = "department")
 public class Department {  
@@ -24,52 +32,13 @@ public class Department {
 
     @Column(name ="department_name")
     private String departmentName;
-  
+    @JsonIgnore
     @OneToMany(mappedBy ="department", fetch = FetchType.EAGER)
     
     private Set<Employee> employees;
+
     private boolean isDeleted = false;
 
-    public boolean getIsDeleted() {
-        return isDeleted;
-    }
-
-    public void setIsDeleted(boolean deleted) {
-        isDeleted = deleted;
-    }
-
-    public Department() {}
-
-    public Department(String departmentName,int departmentId) {
-        this.departmentName = departmentName;
-        this.departmentId = departmentId;
-    }
-    public Department(String departmentName) {
-        this.departmentName = departmentName;
-    }
-	
-    public String getDepartmentName() {
-        return departmentName;
-    }
-
-    public void setDepartmentName(String departmentName) {
-        this.departmentName = departmentName;
-    }
-    public int getDepartmentId() {
-        return departmentId;
-    }
-
-    public void setDepartmentId(int departmentId) {
-       this.departmentId = departmentId;
-    }
-
-    public Set<Employee> getEmployees() {
-        return employees;
-    }
-
-    public void setEmployees(Set<Employee> employees) {
-        this.employees = employees;
-    }
 }
 
 

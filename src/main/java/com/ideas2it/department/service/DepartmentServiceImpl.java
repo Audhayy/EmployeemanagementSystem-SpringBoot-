@@ -6,6 +6,7 @@ import java.util.List;
 import com.ideas2it.department.dto.DepartmentDto;
 import com.ideas2it.model.Department;
 import com.ideas2it.department.dao.DepartmentDao;
+import com.ideas2it.model.Employee;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.ArrayList;
@@ -32,7 +33,7 @@ import java.util.ArrayList;
 
     }
 
-    public List<Department> displayAllDepartment() {
+    public List<Department> getAllDepartment() {
         return (List<Department>) departmentDao.findAll();
 
         
@@ -47,10 +48,20 @@ import java.util.ArrayList;
         return departmentDao.save(existingDepartment);
     }
 
-    public Department displayDepartment(int id) {
+    public Department getDepartmentById(int id) {
         Department department = departmentDao.findById(id)
         .orElseThrow(() -> new IllegalArgumentException(("Department not found with ID:" + id)));
         return department;
+    }
+    public List<Employee> getEmployeeByDepartmentId(int departmentId) {
+        Department department = departmentDao.findById(departmentId).orElse(null);
+        List<Employee> isEmployee = new ArrayList<>();
+        for(Employee employee : department.getEmployees()) {
+            if(!employee.isDeleted()) {
+                isEmployee.add(employee);
+            }
+        }
+        return isEmployee;
     }
 
 }

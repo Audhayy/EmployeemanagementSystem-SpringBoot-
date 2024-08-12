@@ -2,6 +2,7 @@ package com.ideas2it.department.service;
 
 import com.ideas2it.department.dto.DepartmentDto;
 import com.ideas2it.model.Department;
+import com.ideas2it.model.Employee;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,7 +15,7 @@ import java.util.List;
 public interface DepartmentService {
    /**
     *Method implemented in serviceImpl for creating department records.
-    *@param departmentDto - name of the department to be added
+    *@param department - name of the department to be added
     */
    public Department addDepartment(Department department);
 
@@ -27,7 +28,7 @@ public interface DepartmentService {
    /**
     *Method implemented in ServiceImpl for showing all the departments available.
     */
-   public List<Department> displayAllDepartment();
+   public List<Department> getAllDepartment();
 
    /**
     *Method implemented in ServiceImpl for removing a department from the records.
@@ -50,7 +51,7 @@ public interface DepartmentService {
     */
    public Department updateDepartment(int id, Department department);
 
+   public List<Employee> getEmployeeByDepartmentId(int departmentId);
 
-
-    public Department displayDepartment(int id);
+   public Department getDepartmentById(int id);
 }   
