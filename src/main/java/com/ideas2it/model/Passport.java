@@ -1,17 +1,9 @@
 package com.ideas2it.model;
 
 
-
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
@@ -24,7 +16,6 @@ import lombok.Setter;
   */
 @Getter
 @Setter
-@NoArgsConstructor
 @AllArgsConstructor
 @Entity
 @Table(name = "passport") 
@@ -39,6 +30,7 @@ public class Passport {
     @Column(name ="country_name")
     private String countryName;
 
+    public Passport() {}
     public Passport(int passportNumber, String countryName) {
         this.passportNumber = passportNumber;
         this.countryName = countryName;

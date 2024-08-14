@@ -1,17 +1,12 @@
 package com.ideas2it.model;
 
-
-import java.time.LocalDate;
-import java.time.Period;
-import java.util.Set;
-
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.ideas2it.model.Passport;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.time.LocalDate;
+import java.util.Set;
 
 
 /**
@@ -23,7 +18,6 @@ import lombok.Setter;
 @Getter
 @Setter
 @AllArgsConstructor
-@NoArgsConstructor
 @Entity
 @Table(name = "employee")
 public class Employee {
@@ -62,16 +56,17 @@ public class Employee {
     @JoinTable(name = "association_table",
         joinColumns = @JoinColumn(name = "employee_id"),           
         inverseJoinColumns = @JoinColumn(name = "id"))
-    @JsonBackReference
     private Set<Project> projectList;
 
     public String getProjectNames() {
         StringBuilder projects = new StringBuilder();
-        for (Project project : projectList) {
+        for (Project project : getProjectList()) {
             projects.append(project.getProjectName()).append(",");
         }
         return projects.toString(); 
     }
+
+    public Employee() {}
 }
 
 

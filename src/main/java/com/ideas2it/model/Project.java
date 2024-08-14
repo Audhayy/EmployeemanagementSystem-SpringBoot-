@@ -1,7 +1,6 @@
 package com.ideas2it.model;
 
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -36,7 +35,7 @@ public class Project {
 
     @ManyToMany(mappedBy = "projectList",
             fetch = FetchType.EAGER)
-    @JsonManagedReference
+
     private Set<Employee> employees;
 
     @Column
