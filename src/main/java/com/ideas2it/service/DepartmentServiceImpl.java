@@ -12,6 +12,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,9 +33,12 @@ import java.util.List;
         this.departmentDao = departmentDao;
     }
 
-
-    public DepartmentDto addDepartment(DepartmentDto departmentDto) {
+    public DepartmentDto addDepartment(DepartmentDto departmentDto) throws SQLIntegrityConstraintViolationException{
         Department department = DepartmentMapper.convertDtoToEntity(departmentDto);
+        if(departmentDao.existsByDepartmentName(department.getDepartmentName())) {
+            logger.warn("trying to add a duplicate entry of the department");
+            throw new SQLIntegrityConstraintViolationException("cannot create duplicate entry of an already existing department");
+        }
         logger.info("Department has been successfully created");
         return DepartmentMapper.convertEntityToDto(departmentDao.save(department));
 

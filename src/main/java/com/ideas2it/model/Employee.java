@@ -1,5 +1,6 @@
 package com.ideas2it.model;
 
+import com.ideas2it.util.validator;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -64,6 +65,12 @@ public class Employee {
             projects.append(project.getProjectName()).append(",");
         }
         return projects.toString(); 
+    }
+    public String getAge() {
+        if(employeeDOB != null) {
+            return validator.ageCalculator(employeeDOB);
+        }
+        return "";
     }
 
     public Employee() {}

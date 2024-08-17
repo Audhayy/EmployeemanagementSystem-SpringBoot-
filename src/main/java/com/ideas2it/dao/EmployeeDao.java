@@ -8,5 +8,6 @@ import java.util.List;
 public interface EmployeeDao extends CrudRepository<Employee, Integer> {
     List<Employee> findByIsDeletedFalse();
     Employee findByIsDeletedFalseAndEmployeeId(int employeeId);
+    public boolean existsByEmployeeName(String employeeName) ;
 
 }

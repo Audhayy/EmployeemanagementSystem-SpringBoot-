@@ -5,6 +5,7 @@ import com.ideas2it.model.Employee;
 import com.ideas2it.model.Project;
 import org.springframework.stereotype.Service;
 
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
 
 /**
@@ -18,7 +19,7 @@ public interface EmployeeService {
      *Method implemented in serviceImpl for creating employee records.
      *@param employee - object of the employee to be added
      */
-    public Employee createEmployee(Employee employee);
+    public Employee createEmployee(Employee employee)throws SQLIntegrityConstraintViolationException;
 
     /**
      *Method implemented in ServiceImpl for showing the employee corresponding to the id.

@@ -4,6 +4,7 @@ import com.ideas2it.dto.DepartmentDto;
 import com.ideas2it.dto.EmployeeDto;
 import org.springframework.stereotype.Service;
 
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
 
 /**
@@ -16,7 +17,7 @@ public interface DepartmentService {
     *Method implemented in serviceImpl for creating department records.
     *@param department - name of the department to be added
     */
-   public DepartmentDto addDepartment(DepartmentDto departmentDto);
+   public DepartmentDto addDepartment(DepartmentDto departmentDto) throws SQLIntegrityConstraintViolationException;
 
    /**
     *Method implemented in ServiceImpl for showing the department corresponding to the id.

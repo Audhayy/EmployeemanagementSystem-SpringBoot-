@@ -18,6 +18,7 @@ public class EmployeeDto {
 
     private String employeeName;
 
+
     private LocalDate employeeDOB;
 
     private int departmentId;
@@ -33,6 +34,8 @@ public class EmployeeDto {
     private String employeeEmail;
 
     private String phoneNumber;
+
+    private String EmployeeAge;
 
     private Set<Project> projectList;
     public EmployeeDto() {}

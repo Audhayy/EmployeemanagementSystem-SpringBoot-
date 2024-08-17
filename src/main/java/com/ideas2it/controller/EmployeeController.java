@@ -1,5 +1,6 @@
 package com.ideas2it.controller;
 
+import com.ideas2it.dto.CreateEmployeeDto;
 import com.ideas2it.dto.DepartmentDto;
 import com.ideas2it.dto.EmployeeDto;
 import com.ideas2it.dto.ProjectDto;
@@ -13,18 +14,19 @@ import com.ideas2it.model.Project;
 import com.ideas2it.service.DepartmentService;
 import com.ideas2it.service.EmployeeService;
 import com.ideas2it.service.ProjectService;
-
+import jakarta.validation.Valid;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.ideas2it.mapper.EmployeeMapper.convertEntityToDto;
 import static com.ideas2it.mapper.EmployeeMapper.convertToDto;
 
 /**
@@ -57,7 +59,7 @@ private static final Logger logger = LogManager.getLogger();
      * </p>
      */
     @PostMapping()
-    public ResponseEntity<EmployeeDto> createEmployeeRecords(@RequestBody EmployeeDto employeeDto) {
+    public ResponseEntity<CreateEmployeeDto> createEmployeeRecords(@Valid @RequestBody EmployeeDto employeeDto) throws SQLIntegrityConstraintViolationException {
         DepartmentDto departmentDto = departmentService.getDepartmentById(employeeDto.getDepartmentId());
         Department department = DepartmentMapper.convertDtoToEntity(departmentDto);
         Passport passport = new Passport(employeeDto.getPassportNumber(), employeeDto.getCountryName());
@@ -65,7 +67,7 @@ private static final Logger logger = LogManager.getLogger();
         employee.setDepartment(department);
         employee.setPassport(passport);
         Employee savedEmployee = employeeService.createEmployee(employee);
-        return new ResponseEntity<>(convertToDto(savedEmployee), HttpStatus.CREATED);
+        return new ResponseEntity<>(convertEntityToDto(savedEmployee), HttpStatus.CREATED);
     }
 
     /**

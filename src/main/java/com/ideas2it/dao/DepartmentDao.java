@@ -10,5 +10,6 @@ import java.util.List;
 public interface DepartmentDao extends CrudRepository<Department, Integer> {
     List<Department> findByIsDeletedFalse();
     Department findByIsDeletedFalseAndDepartmentId(int departmentId);
+    public boolean existsByDepartmentName(String departmentName) ;
 
 }
