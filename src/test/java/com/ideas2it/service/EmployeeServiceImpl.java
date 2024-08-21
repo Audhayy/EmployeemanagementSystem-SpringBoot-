@@ -19,7 +19,7 @@ import java.util.NoSuchElementException;
  *</p>
  */
 @Service
-public class EmployeeServiceImpl implements EmployeeService {
+public class EmployeeServiceImpl implements EmployeeServiceTest {
     private static final Logger logger = LogManager.getLogger();
 
     @Autowired
@@ -30,16 +30,17 @@ public class EmployeeServiceImpl implements EmployeeService {
         this.employeeDao = employeeDao;
     }
 
-    public Employee createEmployee(Employee employee){
+    public Employee createEmployee(Employee employee) {
         if(employeeDao.existsByEmployeeName(employee.getEmployeeName())) {
             logger.warn("trying to add a duplicate entry of the employee");
+
         }
-            logger.info("Employee created successfully with name:{}",employee.getEmployeeName());
+        logger.info("Employee created successfully with name:{}",employee.getEmployeeName());
         return employeeDao.save(employee);
     }
 
     public List<Employee> getAllEmployees() {
-        return (List<Employee>) employeeDao.findByIsDeletedFalse();
+        return (List<Employee>) employeeDao.findAll();
 
 
     }
@@ -66,10 +67,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     public Employee getEmployee(int id) {
-        Employee employee = employeeDao.findByIsDeletedFalseAndEmployeeId(id);
-        if(null == employee) {
-            throw new NoSuchElementException("Employee not found with id:" + id);
-        }
+        Employee employee = employeeDao.findById(id).orElse(null);
         return employee;
     }
     public Employee assignEmployee(int employeeId, Project project) {
@@ -81,11 +79,11 @@ public class EmployeeServiceImpl implements EmployeeService {
             }
             logger.warn("Project not found");
         }
-            for(Project currentProject : employee.getProjectList()) {
-                if (currentProject.getProjectId()== project.getProjectId()) {
-                    throw new EmployeeException("Employee has been already assigned");
-                }
+        for(Project currentProject : employee.getProjectList()) {
+            if (currentProject.getProjectId()== project.getProjectId()) {
+                throw new EmployeeException("Employee has been already assigned");
             }
+        }
         employee.getProjectList().add(project);
         logger.info("Employee has been assigned to the specified project");
         return employeeDao.save(employee);

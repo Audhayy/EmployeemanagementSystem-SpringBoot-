@@ -5,7 +5,6 @@ import com.ideas2it.model.Employee;
 import com.ideas2it.model.Project;
 import org.springframework.stereotype.Service;
 
-import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
 
 /**
@@ -13,13 +12,13 @@ import java.util.List;
  *this interface provides methods for managing employee records.
  */
 @Service
-public interface EmployeeService {
+public interface EmployeeServiceTest {
 
     /**
      *Method implemented in serviceImpl for creating employee records.
      *@param employee - object of the employee to be added
      */
-    public Employee createEmployee(Employee employee)throws SQLIntegrityConstraintViolationException;
+    public Employee createEmployee(Employee employee);
 
     /**
      *Method implemented in ServiceImpl for showing the employee corresponding to the id.
@@ -33,20 +32,28 @@ public interface EmployeeService {
     public List<Employee> getAllEmployees();
 
     /**
-     * Method implemented in ServiceImpl to get update the employee details
-     * that has been previously given.
-     *
-     * @param employee - object of the class employee
-     * @param id - unique identifier of project
+     *Method implemented in ServiceImpl for removing a employee from the records.
+     *@param id - unique identifier of the employee
+     *@throws EmployeeException when cannot be deleted
      */
-    public Employee updateEmployee(int id, Employee employee);
 
-    public Employee assignEmployee(int employeeId, Project project);
     /**
      *Method implemented in ServiceImpl to check if the employee id given by the employee
      *matches with the employee id in the employee.
      *@param id - unique identifier of the employee
+     *@throws EmployeeException while the id does cannot be fetched
      */
+
+    /**
+     * Method implemented in ServiceImpl to get update the employee details
+     * that has been previously given.
+     *
+     * @param employee - object of the class employee
+     */
+    public Employee updateEmployee(int id, Employee employee);
+
+    public Employee assignEmployee(int employeeId, Project project);
+
     public Employee getEmployee(int id);
 
 }

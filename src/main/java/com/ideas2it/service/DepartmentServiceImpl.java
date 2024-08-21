@@ -3,6 +3,7 @@ package com.ideas2it.service;
 import com.ideas2it.dao.DepartmentDao;
 import com.ideas2it.dto.DepartmentDto;
 import com.ideas2it.dto.EmployeeDto;
+import com.ideas2it.exception.EmployeeException;
 import com.ideas2it.mapper.DepartmentMapper;
 import com.ideas2it.mapper.EmployeeMapper;
 import com.ideas2it.model.Department;
@@ -12,7 +13,6 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,11 +33,10 @@ import java.util.List;
         this.departmentDao = departmentDao;
     }
 
-    public DepartmentDto addDepartment(DepartmentDto departmentDto) throws SQLIntegrityConstraintViolationException{
+    public DepartmentDto addDepartment(DepartmentDto departmentDto) {
         Department department = DepartmentMapper.convertDtoToEntity(departmentDto);
         if(departmentDao.existsByDepartmentName(department.getDepartmentName())) {
             logger.warn("trying to add a duplicate entry of the department");
-            throw new SQLIntegrityConstraintViolationException("cannot create duplicate entry of an already existing department");
         }
         logger.info("Department has been successfully created");
         return DepartmentMapper.convertEntityToDto(departmentDao.save(department));
@@ -75,12 +74,15 @@ import java.util.List;
 
     public DepartmentDto getDepartmentById(int id) {
         Department department = departmentDao.findByIsDeletedFalseAndDepartmentId(id);
+        if(null == department) {
+            throw new EmployeeException("Department Not found with Id : " + 1);
+        }
         return DepartmentMapper.convertEntityToDto(department);
     }
     public List<EmployeeDto> getEmployeeByDepartmentId(int departmentId) {
         Department department = departmentDao.findByIsDeletedFalseAndDepartmentId(departmentId);
         List<EmployeeDto> employeesByDepartment = new ArrayList<>();
-        List<Employee> employees = new ArrayList<Employee>(department.getEmployees());
+        List<Employee> employees = new ArrayList<>(department.getEmployees());
         for(Employee employee : employees) {
             if(!employee.isDeleted()) {
                 employeesByDepartment.add(EmployeeMapper.convertToDto(employee));

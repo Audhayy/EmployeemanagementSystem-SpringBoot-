@@ -37,6 +37,11 @@ public class Department {
 
     private boolean isDeleted = false;
     public Department() {}
+
+    public Department(int departmentId, String departmentName) {
+        this.departmentId = departmentId;
+        this.departmentName = departmentName;
+    }
 }
 
 

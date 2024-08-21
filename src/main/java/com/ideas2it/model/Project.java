@@ -41,6 +41,14 @@ public class Project {
     @Column
     private boolean isDeleted;
 
+    public Project(String projectName) {
+        this.projectName = projectName;
+    }
+
+    public Project(int projectId, String projectName) {
+        this.projectId = projectId;
+        this.projectName = projectName;
+    }
 }
 
 

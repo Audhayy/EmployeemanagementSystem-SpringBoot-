@@ -4,19 +4,13 @@ import com.ideas2it.dto.DepartmentDto;
 import com.ideas2it.dto.EmployeeDto;
 import com.ideas2it.service.DepartmentService;
 import jakarta.validation.Valid;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
 
 /**
@@ -34,32 +28,66 @@ import java.util.List;
 @RestController
 @RequestMapping("api/v1/departments")
 public class DepartmentController {
+    private static final Logger logger = LogManager.getLogger();
 
     @Autowired
     private DepartmentService departmentService;
 
+    /**
+     * <p>
+     *This method is used to create a department into the repository
+     * </p>
+     */
     @PostMapping()
-    private DepartmentDto addDepartment(@Valid @RequestBody DepartmentDto departmentDto) throws SQLIntegrityConstraintViolationException {
-        return departmentService.addDepartment(departmentDto);
+    public ResponseEntity<DepartmentDto> addDepartment(@Valid @RequestBody DepartmentDto departmentDto){
+        DepartmentDto savedDepartment = departmentService.addDepartment(departmentDto);
+        return new ResponseEntity<>((savedDepartment), HttpStatus.CREATED);
     }
-
+    /**
+     * <p>
+     *This method is used to show all the departments in the repository
+     * </p>
+     */
     @GetMapping()
-    public List<DepartmentDto> DisplayAllDepartments() {
-        return departmentService.getAllDepartment();
+    public ResponseEntity<List<DepartmentDto>>  DisplayAllDepartments() {
+        List<DepartmentDto> departments  = departmentService.getAllDepartment();
+        return new ResponseEntity<>(departments, HttpStatus.OK);
 
     }
+    /**
+     * <p>
+     *This method is used to show a specific department in the repository
+     * @param departmentId - unique identifier of the department
+     * </p>
+     */
     @GetMapping("/{id}")
-    public DepartmentDto displayDepartment(@PathVariable("id") int departmentId) {
-       return departmentService.getDepartmentById(departmentId);
+    public ResponseEntity<DepartmentDto> displayDepartment(@PathVariable("id") int departmentId) {
+        DepartmentDto showdepartmentDto = departmentService.getDepartmentById(departmentId);
+        return new ResponseEntity<>((showdepartmentDto),HttpStatus.OK);
     }
+    /**
+     * <p>
+     *This method is used to create a department into the repository
+     * @param departmentId -unique identifier of department
+     * </p>
+     */
     @PutMapping("{id}")
-    public DepartmentDto updateDepartment(@PathVariable("id") int departmentId,@RequestBody DepartmentDto departmentDto) {
-        return departmentService.updateDepartment(departmentId,departmentDto);
+    public ResponseEntity<DepartmentDto> updateDepartment(@PathVariable("id") int departmentId,@RequestBody DepartmentDto departmentDto) {
+        DepartmentDto updateDepartmentDto =  departmentService.updateDepartment(departmentId,departmentDto);
+        logger.info("Department details have been updated of id..{}",departmentId);
+        return new ResponseEntity<>((updateDepartmentDto),HttpStatus.OK);
     }
-
+    /**
+     * <p>
+     *This method is used to delete a department from the repository
+     * @param departmentId
+     * </p>
+     */
     @DeleteMapping("{id}")
-    public void deleteEmployee(@PathVariable("id") int departmentId) {
+    public ResponseEntity<Void> deleteEmployee(@PathVariable("id") int departmentId) {
         departmentService.removeDepartment(departmentId);
+        logger.info("Department has been deleted..{}",departmentId);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
     @GetMapping("/employees/{departmentId}")
     public ResponseEntity<List<EmployeeDto>> getEmployeesByDepartmentId(@PathVariable("departmentId") int departmentId) {

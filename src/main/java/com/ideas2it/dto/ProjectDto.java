@@ -14,4 +14,8 @@ public class ProjectDto {
     @NotBlank(message = "passport name is a mandatory field and cannot be empty")
     @Pattern(regexp = "(/^[A-Za-z]+$/) ",message = "department name must only contain alphabets")
     private String Name;
+
+    public ProjectDto() {
+
+    }
 }

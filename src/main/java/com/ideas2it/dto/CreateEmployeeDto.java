@@ -9,6 +9,12 @@ import java.time.LocalDate;
 @Getter
 @Setter
 @AllArgsConstructor
+/**
+ *This class is used to be the dto when an employee is being created
+ *It includes most of the members present in the model such as employeeId,employeeDOb
+ * and many others
+ * also is used for validation while creating details for employee
+ */
 public class CreateEmployeeDto {
 
     private int employeeId;
